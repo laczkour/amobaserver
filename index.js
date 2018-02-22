@@ -5,7 +5,7 @@ var history = [];
 var victory = false;
 var moveEventX = [];
 var moveEventO = [];
-var size = 20;
+var size = 10;
 
 app.get('/reset', (req, res) => {
   history = [];
@@ -44,6 +44,10 @@ app.get('/waitfor/o', (req, res) => {
 
 app.get('/table', (req, res) => {
   res.send(drawTable(createTable()));
+});
+
+app.get('/whowon', (req, res) => {
+  res.send(victory);
 });
 
 function move(x, y, color) {
@@ -115,11 +119,14 @@ function catchMaxLength(algo) {
 
 function drawTable(table) {
   var s = '';
-  for (let i = -size; i < size + 1; i++) {
-    for (let j = -size; j < size + 1; j++) {
+  for (let j = -size; j < size + 1; j++) {
+    for (let i = -size; i < size + 1; i++) {
       s += ' ' + table[i][j] + ' ';
     }
     s += '<br>';
+  }
+  if (victory != false) {
+    s += 'Győzelem: ' + victory;
   }
   return s;
 }
@@ -136,6 +143,7 @@ function createTable() {
   history.forEach(step => {
     if (!table[step[0]]) table[step[0]] = [];
     table[step[0]][step[1]] = stepX ? 'x' : 'o';
+    stepX = !stepX;
   });
   return table;
 }
