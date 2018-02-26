@@ -1,5 +1,12 @@
-if (!myNetwork) var myNetwork = new neataptic.architect.Perceptron(243, 300, 1);
-else console.log('létező hálózat');
+if (typeof window === 'undefined') {
+  var myNetwork;
+  setNetwork = function(network) {
+    myNetwork = network;
+  };
+  module.exports = { createWeightsFromTable, setNetwork };
+} else {
+  if (!myNetwork) var myNetwork = new neataptic.architect.Perceptron(243, 300, 1);
+}
 
 function createWeightsFromTable(table, size) {
   let weightTable = [[], [], [], [], [], [], [], [], []]; // 9
