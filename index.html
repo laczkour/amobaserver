@@ -10,9 +10,75 @@
   <script src="neataptic.js"></script>
   <script src="myNetwork.js"></script>
   <script src="ai.js"></script>
+  <script>
+    var size = 9;
+    var buttonsize = 30;
+    var buttons = [];
+    var table = [];
+    function changeButton(i, j) {
+      switch (table[i][j]) {
+        case ' ': table[i][j] = 'x'; break;
+        case 'x': table[i][j] = 'o'; break;
+        case 'o': table[i][j] = ' '; break;
+      }
+      if (table[i][j] == ' ') {
+        buttons[i][j].innerHTML = "&nbsp";
+      } else {
+        buttons[i][j].innerHTML = table[i][j];
+      }
+      var weights = createWeightsFromTable(table, size);
+      for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+          valueDivs[i][j].innerHTML = ((weights[i][j] * 1000) + "").substr(0, 4);
+        }
+      }
+    }
+
+    function tableCreate() {
+      var drawtable = document.getElementById('drawtable');
+      for (let i = 0; i < size; i++) {
+        buttons[i] = [];
+        table[i] = [];
+        for (let j = 0; j < size; j++) {
+          var button = document.createElement('button');
+          button.onclick = () => changeButton(i, j);
+          button.id = `button_${i}_${j}`;
+          button.style.width = `${buttonsize}px`;
+          button.style.height = `${buttonsize}px`;
+          button.innerHTML = "&nbsp";
+          drawtable.appendChild(button);
+          buttons[i][j] = button;
+          table[i][j] = " ";
+        }
+        drawtable.appendChild(document.createElement('br'));
+      }
+      valueTableCreate();
+    }
+
+    var valueDivs = [];
+    function valueTableCreate() {
+      var valuetable = document.getElementById('valuetable');
+      for (let i = 0; i < size; i++) {
+        valueDivs[i] = [];
+        var tr = document.createElement('tr');
+        valuetable.appendChild(tr);
+        for (let j = 0; j < size; j++) {
+          var td = document.createElement('td');
+          td.innerHTML = "&nbsp&nbsp&nbsp";
+          valueDivs[i][j] = td;
+          tr.appendChild(td);
+        }
+      }
+      changeButton(Math.floor(size / 2), Math.floor(size / 2));
+    }
+  </script>
 </head>
 
-<body onload="aistart();">
+<body onload="tableCreate();">
+  <div id='drawtable'></div>
+  <div>
+    <table id='valuetable' border></table>
+  </div>
 </body>
 
 </html>
