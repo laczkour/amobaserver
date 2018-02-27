@@ -21,13 +21,13 @@ var neat;
 function initNeat() {
   neat = new neataptic.Neat(243, 1, null, {
     mutation: [
-      /* Methods.Mutation.ADD_NODE,
-        Methods.Mutation.SUB_NODE,
-        Methods.Mutation.ADD_CONN,
-        Methods.Mutation.SUB_CONN,*/
-      neataptic.Methods.Mutation.MOD_WEIGHT,
-      neataptic.Methods.Mutation.MOD_BIAS,
-      neataptic.Methods.Mutation.MOD_ACTIVATION
+      neataptic.methods.mutation.ADD_NODE,
+      neataptic.methods.mutation.SUB_NODE,
+      neataptic.methods.mutation.ADD_CONN,
+      neataptic.methods.mutation.SUB_CONN,
+      neataptic.methods.mutation.MOD_WEIGHT,
+      neataptic.methods.mutation.MOD_BIAS,
+      neataptic.methods.mutation.MOD_ACTIVATION
       /* Methods.Mutation.ADD_GATE,
         Methods.Mutation.SUB_GATE,
         Methods.Mutation.ADD_SELF_CONN,
@@ -46,6 +46,8 @@ function createTournament() {
   var competitors = neat.population;
   console.log(competitors);
 }
+
+function createMatch(x, o) {}
 
 initNeat();
 createTournament();
