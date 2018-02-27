@@ -11,14 +11,17 @@ var history = [];
 var victory = false;
 var size = 10;
 
-function startNew() {
+function startNew(size0) {
   history = [];
   victory = false;
-  size = 10;
+  size = size0 ? size0 : 10;
 }
 
 function move(x, y, color) {
+  //console.log('move ', { x, y, color });
   if (!validMove(x, y, color)) return false;
+  //console.log(history);
+  //console.log('was valid');
   history.push([x, y]);
   isVictory();
   return true;
@@ -26,12 +29,13 @@ function move(x, y, color) {
 
 function validMove(x, y, color) {
   let valid = true;
-  if (x > size || x < -size || y > size || y < -size) return false;
+  if (x >= size || x < 0 || y >= size || y < 0) return false;
   if (victory !== false) {
     return false;
   }
   history.forEach(step => {
-    if (step.x === x && step.y === y) {
+    //console.log('step ', step, { x, y });
+    if (step[0] === x && step[1] === y) {
       valid = false;
     }
   });
@@ -86,27 +90,32 @@ function catchMaxLength(algo) {
 
 function drawTable(table) {
   var s = '';
-  for (let j = -size; j < size + 1; j++) {
-    for (let i = -size; i < size + 1; i++) {
-      s += ' ' + table[i][j] + ' ';
+  for (let j = 0; j < size; j++) {
+    for (let i = 0; i < size; i++) {
+      if (table[i][j] != ' ') {
+        s += table[i][j];
+      } else {
+        s += '_';
+      }
     }
-    s += '<br>';
+    s += '\n';
   }
-  if (victory != false) {
-    s += 'Győzelem: ' + victory;
-  }
+  //if (victory != false) {
+  //  s += 'Győzelem: ' + victory;
+  //}
   return s;
 }
 
-function createTable() {
+function createTable(xStarted) {
   let table = [];
-  for (let i = -size; i < size + 1; i++) {
+  for (let i = 0; i < size; i++) {
     table[i] = [];
-    for (let j = -size; j < size + 1; j++) {
-      table[i][j] = '_';
+    for (let j = 0; j < size; j++) {
+      table[i][j] = ' ';
     }
   }
-  let stepX = true;
+
+  let stepX = xStarted ? true : false;
   history.forEach(step => {
     if (!table[step[0]]) table[step[0]] = [];
     table[step[0]][step[1]] = stepX ? 'x' : 'o';
